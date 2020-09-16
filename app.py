@@ -77,14 +77,14 @@ def persist_image(folder_path:str,url:str, counter):
         print(f"ERROR - Could not save {url} - {e}")
 
 
-def search_and_download(search_term: str, driver_path: str, target_path='./images', number_images=10):
+def search_and_download(search_term: str, target_path='./images', number_images=10):
     print("search_term",search_term.lower().split(' '))
     target_folder = os.path.join(target_path, '_'.join(search_term.lower().split(' ')))
 
     if not os.path.exists(target_folder):
         os.makedirs(target_folder)
 
-    with webdriver.Chrome(executable_path=driver_path) as wd:
+    with webdriver.Chrome(executable_path=str(os.environ.get('CHROMEDRIVER_PATH'))) as wd:
         res = fetch_image_urls(search_term, number_images, wd=wd, sleep_between_interactions=0.5)
 
     counter = 0
@@ -103,8 +103,8 @@ def search_and_download(search_term: str, driver_path: str, target_path='./image
 # Step 7 : python -m pip install -r requirements.txt
 
 
-DRIVER_PATH = './chromedriver.exe'
+#DRIVER_PATH = './chromedriver.exe'
 search_term = 'Dog'
 # num of images you can pass it from here  by default it's 10 if you are not passing
 number_images = 5
-search_and_download(search_term=search_term, driver_path=DRIVER_PATH,number_images=number_images)
+search_and_download(search_term=search_term, number_images=number_images)
